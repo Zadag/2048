@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameboard {
+    height: 60vh;
+    width: 60vh;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 25% 25% 25% 25%;
+    border-width: 1px;
+    border-style: solid;
+    background-color: rgb(144, 144, 84)
+}
+
+.gamesquare {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 4vh;
+    text-align: center;
+    line-height: 350%;
+}
+
+.numcard {
+    height: 95%;
+    width: 95%;
+    background-color: yellow;
+    border-radius: 10%;
+    
+}
