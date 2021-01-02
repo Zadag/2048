@@ -16,7 +16,18 @@ const game = (() => {
     for(let i=0; i<16; i++) {
         gameboard.push(new NumCard(0));
     }
-    return {gameboard}
+
+    const freeSquares = () => {
+        let openSquares = [];
+        gameboard.forEach(boardSquare =>{
+            if(boardSquare._num === 0) openSquares.push(boardSquare);
+        })
+        console.log(openSquares);
+    }
+
+
+
+    return {gameboard, freeSquares}
 })();
 
 
@@ -25,60 +36,60 @@ const display = (() => {
         const gameSquares = document.querySelectorAll('.gamesquare');
         const card = document.createElement('div');
         card.classList.add('numcard');
+        if(cardNum !==0) card.textContent = cardNum;
         
         switch(cardNum){
             case(2): 
                 card.style.backgroundColor = 'yellow';
                 break; 
             case(4): 
-                card.style.color = 'orange';
+                card.style.backgroundColor = 'orange';
                 break;
             case(8): 
-                card.style.color = 'red';
+                card.style.backgroundColor = 'red';
                 break;
             case(16): 
-                card.style.color = 'purple';
+                card.style.backgroundColor = 'purple';
                 break;
             case(32): 
-                card.style.color = 'blue';
+                card.style.backgroundColor = 'blue';
                 break;
             case(64): 
-                card.style.color = 'green';
+                card.style.backgroundColor = 'green';
                 break;
             case(128): 
-                card.style.color = 'gray';
+                card.style.backgroundColor = 'gray';
                 break;
             case(256): 
-                card.style.color = 'yellow';
+                card.style.backgroundColor = 'yellow';
                 break;
             case(512): 
-                card.style.color = 'yellow';
+                card.style.backgroundColor = 'yellow';
                 break;
             case(1024): 
-                card.style.color = 'yellow';
+                card.style.backgroundColor = 'yellow';
                 break;
             case(2048): 
-                card.style.color = 'yellow';
+                card.style.backgroundColor = 'yellow';
                 break;
             case(4096): 
-                card.style.color = 'yellow';
+                card.style.backgroundColor = 'yellow';
                 break;
             case(8192): 
-                card.style.color = 'yellow';
+                card.style.backgroundColor = 'yellow';
                 break;
         }
         gameSquares[boardIndex].appendChild(card);
-        console.log(gameSquares[cardNum]);
+        console.log(gameSquares[boardIndex]);
     }
 
     const setCards = () => {
         for(let i=0; i<16; i++){
-            if(game.gameboard[i]._num !== 0){
-                makeCard(game.gameboard[i]._num, i);
-            } 
+            makeCard(game.gameboard[i]._num, i);
         }
     }
 
     return {setCards}
 })();
 display.setCards();
+game.freeSquares();
