@@ -55,6 +55,7 @@ const game = (() => {
 
 
 const display = (() => {
+
     const makeCard = (cardNum, boardIndex) => {
         const gameSquares = document.querySelectorAll('.gamesquare');
         const card = document.createElement('div');
@@ -107,13 +108,23 @@ const display = (() => {
         console.log(gameSquares[boardIndex]);
     }
 
+    const clearCards = () => {
+        const gameSquares = document.querySelectorAll('.gamesquare');
+        gameSquares.forEach(square => {
+            if(square.hasChildNodes){
+                square.lastChild.remove();
+            }
+        });
+    }
+
     const setCards = () => {
+        //clearCards();
         for(let i=0; i<16; i++){
             makeCard(game.gameboard[i]._num, i);
         }
     }
 
-    return {setCards}
+    return {setCards, clearCards}
 })();
 display.setCards();
 game.addNewNum();
