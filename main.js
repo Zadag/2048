@@ -22,6 +22,7 @@ const game = (() => {
         let openSquares = [];
         gameboard.forEach(boardSquare =>{
             if(boardSquare._num === 0) openSquares.push(boardSquare); 
+            else openSquares.push('occupied');
         })
         return openSquares
     }
@@ -29,25 +30,24 @@ const game = (() => {
     const turnCount = () => turn++;
 
     const addNewNum = () => {
-        for(let i = 0; i < 2; i++){
-            let numAdded = false;
+        let numAdded = false;
         
-            const randSquare = () => {
-                return Math.floor(Math.random() * (16));
-            }
+        const randSquare = () => {
+            return Math.floor(Math.random() * (16));
+        }
         
-            const twoOrFour = () => {
-                if(Math.random() > 0.5) return 2;
-                else return 4;
-            }
+        const twoOrFour = () => {
+            if(Math.random() > 0.5) return 2;
+            else return 4;
+        }
         
-            while(numAdded === false) {
-                if(freeSquares()[randSquare()]._num === 0){
-                    gameboard[randSquare()]._num = twoOrFour();
-                    numAdded = true;    
-                }
+        while(numAdded === false) {
+            if(freeSquares()[randSquare()]._num === 0){
+                gameboard[randSquare()]._num = twoOrFour();
+                numAdded = true;    
             }
         }
+        
     }
 
     return {gameboard, freeSquares, turnCount, addNewNum}
@@ -126,5 +126,18 @@ const display = (() => {
 
     return {setCards, clearCards}
 })();
-display.setCards();
-game.addNewNum();
+
+const controller = (() => {
+    const initialize = () => {
+        game.addNewNum();
+        game.addNewNum();
+        display.setCards();
+    }
+
+    
+
+    return {initialize}
+})();
+
+controller.initialize();
+
