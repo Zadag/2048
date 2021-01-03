@@ -1,6 +1,6 @@
 const game = (() => {
     let gameboard = [];
-
+    let turn = 0;
     class NumCard {
         constructor(num){
             this.num = num;
@@ -16,18 +16,41 @@ const game = (() => {
     for(let i=0; i<16; i++) {
         gameboard.push(new NumCard(0));
     }
-
+//Returns a new array representing gameboard where squares that contain 
+//numbers are represented as "number"
     const freeSquares = () => {
         let openSquares = [];
         gameboard.forEach(boardSquare =>{
-            if(boardSquare._num === 0) openSquares.push(boardSquare);
+            if(boardSquare._num === 0) openSquares.push(boardSquare); 
         })
-        console.log(openSquares);
+        return openSquares
     }
 
+    const turnCount = () => turn++;
 
+    const addNewNum = () => {
+        for(let i = 0; i < 2; i++){
+            let numAdded = false;
+        
+            const randSquare = () => {
+                return Math.floor(Math.random() * (16));
+            }
+        
+            const twoOrFour = () => {
+                if(Math.random() > 0.5) return 2;
+                else return 4;
+            }
+        
+            while(numAdded === false) {
+                if(freeSquares()[randSquare()]._num === 0){
+                    gameboard[randSquare()]._num = twoOrFour();
+                    numAdded = true;    
+                }
+            }
+        }
+    }
 
-    return {gameboard, freeSquares}
+    return {gameboard, freeSquares, turnCount, addNewNum}
 })();
 
 
@@ -36,6 +59,7 @@ const display = (() => {
         const gameSquares = document.querySelectorAll('.gamesquare');
         const card = document.createElement('div');
         card.classList.add('numcard');
+        card.id = `square${boardIndex}`
         if(cardNum !==0) card.textContent = cardNum;
         
         switch(cardNum){
@@ -92,4 +116,4 @@ const display = (() => {
     return {setCards}
 })();
 display.setCards();
-game.freeSquares();
+game.addNewNum();
