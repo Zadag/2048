@@ -7,10 +7,16 @@ const game = (() => {
             this.modified = false;
         }
         get num(){
-            return this._num
+            return this._num;
         }
         set num(val){
             return this._num = val;
+        }
+        get modified(){
+            return this._modified;
+        }
+        set modified(mod) {
+            return this._modified = mod;
         }
     }
 
@@ -43,8 +49,10 @@ const game = (() => {
         }
         
         while(numAdded === false) {
-            if(freeSquares()[randSquare()]._num === 0){
-                gameboard[randSquare()]._num = twoOrFour();
+            let square = gameboard[randSquare()];
+            console.log(square);
+            if(square._num === 0){
+                square._num = twoOrFour();
                 numAdded = true;    
             }
         }
@@ -53,8 +61,10 @@ const game = (() => {
 
     const compareNums = (current, next) => {
         if(current._num === next._num && current._modified === false){
+            console.log('fireing');
             current._num = 0; 
-            next._num = 2 * next._num;
+            next._num = next._num + next._num;
+            next._modified = true;
         }
         if(current._num !== 0 && next._num === 0){
             next._num = current._num;
@@ -71,14 +81,15 @@ const game = (() => {
 
     const moveNums = (direction) => {
         for(let i = 0; i < 13; i = i + 4){
-            console.log(gameboard[i]);
             compareNums(gameboard[i], gameboard[i + 1]);
-            compareNums(gameboard[i + 1], gameboard[i + 2]);
+            compareNums(gameboard[i + 1], gameboard[i + 2]);      
             compareNums(gameboard[i + 2], gameboard[i + 3]);
-            //for(let j = 0; j < 4; j++){
-
-            //}
+            gameboard[i]._modified = false;
+            gameboard[i + 1]._modified = false;
+            gameboard[i + 2]._modified = false;
+            gameboard[i + 3]._modified = false;
         }
+        console.log(gameboard);
     }
 
 
@@ -137,7 +148,6 @@ const display = (() => {
                 break;
         }
         gameSquares[boardIndex].appendChild(card);
-        console.log(gameSquares[boardIndex]);
     }
 
     const clearCards = () => {
@@ -150,7 +160,6 @@ const display = (() => {
     }
 
     const setCards = () => {
-        //clearCards();
         for(let i=0; i<16; i++){
             makeCard(game.gameboard[i]._num, i);
         }
@@ -165,6 +174,15 @@ const controller = (() => {
         game.addNewNum();
         display.setCards();
     }
+
+    document.addEventListener('keydown', (e) => {
+        if(e.code === 'ArrowRight' || e.code === 'ArrowLeft' || e.code === 'ArrowUp' || e.code === 'ArrowDown'){
+            game.moveNums();
+            game.addNewNum();
+            display.clearCards();
+            display.setCards();
+        }
+    })
 
     
 
