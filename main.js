@@ -81,13 +81,20 @@ const game = (() => {
 
     const moveNums = (direction) => {
         for(let i = 0; i < 13; i = i + 4){
-            compareNums(gameboard[i], gameboard[i + 1]);
-            compareNums(gameboard[i + 1], gameboard[i + 2]);      
-            compareNums(gameboard[i + 2], gameboard[i + 3]);
-            gameboard[i]._modified = false;
-            gameboard[i + 1]._modified = false;
-            gameboard[i + 2]._modified = false;
-            gameboard[i + 3]._modified = false;
+            for(let j = 0; j < 3; j++){
+                compareNums(gameboard[i + j], gameboard[i + j + 1]);                
+            }
+            for(let k = 0; k < 4; k++){
+                gameboard[i + k]._modified = false;
+            }
+            
+            //compareNums(gameboard[i], gameboard[i + 1]);
+            //compareNums(gameboard[i + 1], gameboard[i + 2]);      
+            //compareNums(gameboard[i + 2], gameboard[i + 3]);
+            //gameboard[i]._modified = false;
+            //gameboard[i + 1]._modified = false;
+            //gameboard[i + 2]._modified = false;
+            //gameboard[i + 3]._modified = false;
         }
         console.log(gameboard);
     }
