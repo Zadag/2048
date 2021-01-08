@@ -4,6 +4,7 @@ const game = (() => {
     class NumCard {
         constructor(num){
             this.num = num;
+            this.modified = false;
         }
         get num(){
             return this._num
@@ -50,7 +51,38 @@ const game = (() => {
         
     }
 
-    return {gameboard, freeSquares, turnCount, addNewNum}
+    const compareNums = (current, next) => {
+        if(current._num === next._num && current._modified === false){
+            current._num = 0; 
+            next._num = 2 * next._num;
+        }
+        if(current._num !== 0 && next._num === 0){
+            next._num = current._num;
+            current._num = 0;
+        } 
+    }
+
+    const fixSpacing = (current, next) => {
+        if(current._num !== 0 && next._num ===0){
+            next._num = current._num;
+            current._num = 0;
+        }
+    }
+
+    const moveNums = (direction) => {
+        for(let i = 0; i < 13; i = i + 4){
+            console.log(gameboard[i]);
+            compareNums(gameboard[i], gameboard[i + 1]);
+            compareNums(gameboard[i + 1], gameboard[i + 2]);
+            compareNums(gameboard[i + 2], gameboard[i + 3]);
+            //for(let j = 0; j < 4; j++){
+
+            //}
+        }
+    }
+
+
+    return {gameboard, freeSquares, turnCount, addNewNum, moveNums}
 })();
 
 
