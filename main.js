@@ -71,21 +71,37 @@ const game = (() => {
         }
     }
 
+    const pushToDirection = (num1, num2, num3, num4) => {
+        if(num1._num !== 0 && num2._num === 0){
+            num2._num = num1._num;
+            num1._num = 0;
+        }
+        if(num2._num !== 0 && num3._num === 0){
+            num3._num = num2._num;
+            nume2._num = 0;
+        }
+        if(num3._num !== 0 && num4._num === 0){
+            num4._num = num3._num;
+            num3._num = 0;
+        }
+    }
+
     const iterateBoard = () => {
         for(let i = 0; i < 13; i = i + 4){
-            for(let j = 0; j < 3; j++){
-                compareNums(gameboard[i + j], gameboard[i + j + 1]);
-                fixSpacing(gameboard[i + j], gameboard[i + j + 1]);                
+            for(let j = 3; j > 0; j--){
+                compareNums(gameboard[i + j], gameboard[i + j - 1]);
+                fixSpacing(gameboard[i + j], gameboard[i + j - 1]);                
             }
+            console.log(gameboard);
+            pushToDirection(i, i + 1, i + 2, i + 3);
             for(let k = 0; k < 4; k++){
                 gameboard[i + k]._modified = false;
             }
         }
     }
-    
+
     const compareNums = (current, next) => {
         if(current._num === next._num && current._modified === false){
-            console.log('fireing');
             current._num = 0; 
             next._num = next._num + next._num;
             next._modified = true;
@@ -93,11 +109,11 @@ const game = (() => {
         if(current._num !== 0 && next._num === 0){
             next._num = current._num;
             current._num = 0;
-        } 
+      } 
     }
 
     const fixSpacing = (current, next) => {
-        if(current._num !== 0 && next._num ===0){
+        if(current._num !== 0 && next._num === 0){
             next._num = current._num;
             current._num = 0;
         }
