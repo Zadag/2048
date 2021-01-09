@@ -59,6 +59,30 @@ const game = (() => {
         
     }
 
+    const rotateCountClock = () => {
+        let tempArr = [];
+        for(let i = 3; i >= 0 ; i--){
+            for(let j = 0; j < 16; j+= 4){
+                tempArr.push(gameboard[i + j]);
+            }
+        }
+        for(let i = 0; i < 16; i++){
+            gameboard[i] = tempArr[i];
+        }
+    }
+
+    const iterateBoard = () => {
+        for(let i = 0; i < 13; i = i + 4){
+            for(let j = 0; j < 3; j++){
+                compareNums(gameboard[i + j], gameboard[i + j + 1]);
+                fixSpacing(gameboard[i + j], gameboard[i + j + 1]);                
+            }
+            for(let k = 0; k < 4; k++){
+                gameboard[i + k]._modified = false;
+            }
+        }
+    }
+    
     const compareNums = (current, next) => {
         if(current._num === next._num && current._modified === false){
             console.log('fireing');
@@ -78,20 +102,32 @@ const game = (() => {
             current._num = 0;
         }
     }
-
+//TODO fix bug where 3 matching numbers combine in the wrong way
     const moveNums = (direction) => {
-        if(direction === "ArrowRight"){
-            for(let i = 0; i < 13; i = i + 4){
-                for(let j = 0; j < 3; j++){
-                    compareNums(gameboard[i + j], gameboard[i + j + 1]);
-                    fixSpacing(gameboard[i + j], gameboard[i + j + 1]);                
-                }
-                for(let k = 0; k < 4; k++){
-                    gameboard[i + k]._modified = false;
-                }
-            }
-        }
+        if(direction === "ArrowRight") iterateBoard();
 
+        if(direction === "ArrowDown"){
+            rotateCountClock();
+            iterateBoard();
+            rotateCountClock();
+            rotateCountClock();
+            rotateCountClock();
+        }    
+        
+        if(direction === "ArrowLeft"){
+            rotateCountClock();
+            rotateCountClock();
+            iterateBoard();
+            rotateCountClock();
+            rotateCountClock();
+        }
+        if(direction === "ArrowUp"){
+            rotateCountClock();
+            rotateCountClock();
+            rotateCountClock();
+            iterateBoard();
+            rotateCountClock();
+        }
         console.log(gameboard);
     }
 
