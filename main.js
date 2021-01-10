@@ -72,17 +72,17 @@ const game = (() => {
     }
 
     const pushToDirection = (num1, num2, num3, num4) => {
-        if(num1._num !== 0 && num2._num === 0){
-            num2._num = num1._num;
-            num1._num = 0;
+        if(num1._num === 0 && num2._num !== 0){
+            num1._num = num2._num;
+            num2._num = 0;
         }
-        if(num2._num !== 0 && num3._num === 0){
-            num3._num = num2._num;
-            nume2._num = 0;
+        if(num2._num === 0 && num3._num !== 0){
+            num2._num = num3._num;
+            nume3._num = 0;
         }
-        if(num3._num !== 0 && num4._num === 0){
-            num4._num = num3._num;
-            num3._num = 0;
+        if(num3._num === 0 && num4._num !== 0){
+            num3._num = num4._num;
+            num4._num = 0;
         }
     }
 
@@ -90,10 +90,10 @@ const game = (() => {
         for(let i = 0; i < 13; i = i + 4){
             for(let j = 3; j > 0; j--){
                 compareNums(gameboard[i + j], gameboard[i + j - 1]);
-                fixSpacing(gameboard[i + j], gameboard[i + j - 1]);                
+                //fixSpacing(gameboard[i + j], gameboard[i + j - 1]);                
             }
             console.log(gameboard);
-            pushToDirection(i, i + 1, i + 2, i + 3);
+            pushToDirection(i + 3, i + 2, i + 1, i);
             for(let k = 0; k < 4; k++){
                 gameboard[i + k]._modified = false;
             }
@@ -120,7 +120,9 @@ const game = (() => {
     }
 //TODO fix bug where 3 matching numbers combine in the wrong way
     const moveNums = (direction) => {
-        if(direction === "ArrowRight") iterateBoard();
+        if(direction === "ArrowRight"){
+            iterateBoard();
+        }
 
         if(direction === "ArrowDown"){
             rotateCountClock();
