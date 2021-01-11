@@ -172,12 +172,20 @@ const game = (() => {
         }
     }
 
+    const score = () => {
+        let amount = 0;
+        for(let i = 0; i < 16; i++){
+            amount += gameboard[i]._num;
+        }
+        return amount;
+    }
+
     const changeMade =  {
         change: false
     }
 
 
-    return {gameboard, freeSquares, addNewNum, moveNums, isOver, changeMade}
+    return {gameboard, freeSquares, addNewNum, moveNums, isOver, score, changeMade}
 })();
 
 
@@ -268,7 +276,10 @@ const controller = (() => {
             display.clearCards();
             display.setCards();
             game.changeMade.change = false;
-            console.log(game.isOver());
+            if(game.isOver() === true){
+                const announcer = document.querySelector('.final-score');
+                announcer.innerHTML = `Game over your final score is ${game.score()}`
+            }
         }
     })
 
