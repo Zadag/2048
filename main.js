@@ -71,6 +71,55 @@ const game = (() => {
         }
     }
 
+    const iterateBoard = () => {
+        for(let i = 0; i < 13; i += 4){
+            combineNums(gameboard[i], gameboard[i + 1], gameboard[i + 2], gameboard[i + 3]);
+            combineNums(gameboard[i], gameboard[i + 1], gameboard[i + 2], gameboard[i + 3]);
+            combineNums(gameboard[i], gameboard[i + 1], gameboard[i + 2], gameboard[i + 3]);
+            for(let j = 0; j < 4; j++){
+                gameboard[i + j]._modified = false;
+            }
+        }
+    }
+
+    const combineNums = (num1, num2, num3, num4) => {
+        if(num4._num === num3._num && num4._num !== 0 && num3._num !== 0 && num4._modified === false && num3._modified === false){
+            num4._num = num4._num * 2;
+            num3._num = 0;
+            num4._modified = true;
+            num3._modified = true;
+        }
+        if(num4._num === 0 && num3._num !== 0){
+            num4._num = num3._num;
+            num3._num = 0;
+        }
+        
+        if(num3._num === num2._num && num3._num !== 0 && num2._num !== 0 && num3._modified === false && num2._modified === false){
+            num3._num = num3._num * 2;
+            num2._num = 0;
+            num3._modified = true;
+            num2._modified = true;
+        }
+        if(num3._num === 0 && num2._num !== 0){
+            num3._num = num2._num;
+            num2._num = 0;
+        }
+        
+        if(num2._num === num1._num && num2._num !== 0 && num1._num !== 0 && num2._modified === false && num1._modified === false){
+            num2._num = num2._num * 2;
+            num1._num = 0;
+            num2._modified = true;
+            num1._modified = true;
+        }
+        if(num2._num === 0 && num1._num !== 0){
+            num2._num = num1._num;
+            num1._num = 0;
+        }
+        
+
+    }
+
+    /*
     const pushToDirection = (num1, num2, num3, num4) => {
         if(num1._num === 0 && num2._num !== 0){
             num1._num = num2._num;
@@ -110,7 +159,7 @@ const game = (() => {
             next._num = current._num;
             current._num = 0;
       } 
-    }
+    }*/
 
     const fixSpacing = (current, next) => {
         if(current._num !== 0 && next._num === 0){
@@ -118,7 +167,7 @@ const game = (() => {
             current._num = 0;
         }
     }
-//TODO fix bug where 3 matching numbers combine in the wrong way
+
     const moveNums = (direction) => {
         if(direction === "ArrowRight"){
             iterateBoard();
