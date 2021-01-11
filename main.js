@@ -1,6 +1,6 @@
 const game = (() => {
     let gameboard = [];
-    let turn = 0;
+    
     class NumCard {
         constructor(num){
             this.num = num;
@@ -23,6 +23,26 @@ const game = (() => {
     for(let i=0; i<16; i++) {
         gameboard.push(new NumCard(0));
     }
+
+    const isOver = () => {
+        let x = 0;
+        let y = 0;
+        for(let i = 0; i < 13; i+= 4){
+            for(let j = 0; j < 3; j++){
+                if(gameboard[i + j]._num !== gameboard[i + j + 1]._num && gameboard[i + j]._num !== 0 && gameboard[i + j + 1]._num !== 0){
+                    x++;
+                }
+            }
+        }
+        for(let k = 0; k < 4; k++){
+            for(let l = 0; l < 9; l += 4){
+                if(gameboard[k + l]._num !== gameboard[k + l + 4]._num && gameboard[k + l]._num !== 0 && gameboard[k + l + 4]._num !== 0){
+                    y++;
+                }
+            }
+        }
+        return x + y === 24 ? true : false;
+    }
 //Returns a new array representing gameboard where squares that contain 
 //numbers are represented as "number"
     const freeSquares = () => {
@@ -33,8 +53,6 @@ const game = (() => {
         })
         return openSquares
     }
-
-    const turnCount = () => turn++;
 
     const addNewNum = () => {
         let numAdded = false;
@@ -159,7 +177,7 @@ const game = (() => {
     }
 
 
-    return {gameboard, freeSquares, turnCount, addNewNum, moveNums, changeMade}
+    return {gameboard, freeSquares, addNewNum, moveNums, isOver, changeMade}
 })();
 
 
@@ -250,6 +268,7 @@ const controller = (() => {
             display.clearCards();
             display.setCards();
             game.changeMade.change = false;
+            console.log(game.isOver());
         }
     })
 
