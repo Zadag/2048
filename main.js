@@ -88,10 +88,12 @@ const game = (() => {
             num3._num = 0;
             num4._modified = true;
             num3._modified = true;
+            changeMade.change = true;
         }
         if(num4._num === 0 && num3._num !== 0){
             num4._num = num3._num;
             num3._num = 0;
+            changeMade.change = true;
         }
         
         if(num3._num === num2._num && num3._num !== 0 && num2._num !== 0 && num3._modified === false && num2._modified === false){
@@ -99,10 +101,12 @@ const game = (() => {
             num2._num = 0;
             num3._modified = true;
             num2._modified = true;
+            changeMade.change = true;
         }
         if(num3._num === 0 && num2._num !== 0){
             num3._num = num2._num;
             num2._num = 0;
+            changeMade.change = true;
         }
         
         if(num2._num === num1._num && num2._num !== 0 && num1._num !== 0 && num2._modified === false && num1._modified === false){
@@ -110,62 +114,15 @@ const game = (() => {
             num1._num = 0;
             num2._modified = true;
             num1._modified = true;
+            changeMade.change = true;
         }
         if(num2._num === 0 && num1._num !== 0){
             num2._num = num1._num;
             num1._num = 0;
+            changeMade.change = true;
         }
         
 
-    }
-
-    /*
-    const pushToDirection = (num1, num2, num3, num4) => {
-        if(num1._num === 0 && num2._num !== 0){
-            num1._num = num2._num;
-            num2._num = 0;
-        }
-        if(num2._num === 0 && num3._num !== 0){
-            num2._num = num3._num;
-            nume3._num = 0;
-        }
-        if(num3._num === 0 && num4._num !== 0){
-            num3._num = num4._num;
-            num4._num = 0;
-        }
-    }
-
-    const iterateBoard = () => {
-        for(let i = 0; i < 13; i = i + 4){
-            for(let j = 3; j > 0; j--){
-                compareNums(gameboard[i + j], gameboard[i + j - 1]);
-                //fixSpacing(gameboard[i + j], gameboard[i + j - 1]);                
-            }
-            console.log(gameboard);
-            pushToDirection(i + 3, i + 2, i + 1, i);
-            for(let k = 0; k < 4; k++){
-                gameboard[i + k]._modified = false;
-            }
-        }
-    }
-
-    const compareNums = (current, next) => {
-        if(current._num === next._num && current._modified === false){
-            current._num = 0; 
-            next._num = next._num + next._num;
-            next._modified = true;
-        }
-        if(current._num !== 0 && next._num === 0){
-            next._num = current._num;
-            current._num = 0;
-      } 
-    }*/
-
-    const fixSpacing = (current, next) => {
-        if(current._num !== 0 && next._num === 0){
-            next._num = current._num;
-            current._num = 0;
-        }
     }
 
     const moveNums = (direction) => {
@@ -195,11 +152,14 @@ const game = (() => {
             iterateBoard();
             rotateCountClock();
         }
-        console.log(gameboard);
+    }
+
+    const changeMade =  {
+        change: false
     }
 
 
-    return {gameboard, freeSquares, turnCount, addNewNum, moveNums}
+    return {gameboard, freeSquares, turnCount, addNewNum, moveNums, changeMade}
 })();
 
 
@@ -223,34 +183,34 @@ const display = (() => {
                 card.style.backgroundColor = 'red';
                 break;
             case(16): 
-                card.style.backgroundColor = 'purple';
+                card.style.backgroundColor = 'pink';
                 break;
             case(32): 
-                card.style.backgroundColor = 'blue';
+                card.style.backgroundColor = 'purple';
                 break;
             case(64): 
-                card.style.backgroundColor = 'green';
+                card.style.backgroundColor = 'blue';
                 break;
             case(128): 
-                card.style.backgroundColor = 'gray';
+                card.style.backgroundColor = 'lightSeaGreen';
                 break;
             case(256): 
-                card.style.backgroundColor = 'yellow';
+                card.style.backgroundColor = 'green';
                 break;
             case(512): 
-                card.style.backgroundColor = 'yellow';
+                card.style.backgroundColor = 'olive';
                 break;
             case(1024): 
-                card.style.backgroundColor = 'yellow';
+                card.style.backgroundColor = 'darkGreen';
                 break;
             case(2048): 
-                card.style.backgroundColor = 'yellow';
+                card.style.backgroundColor = 'lightBrown';
                 break;
             case(4096): 
-                card.style.backgroundColor = 'yellow';
+                card.style.backgroundColor = 'brown';
                 break;
             case(8192): 
-                card.style.backgroundColor = 'yellow';
+                card.style.backgroundColor = 'gray';
                 break;
         }
         gameSquares[boardIndex].appendChild(card);
@@ -284,9 +244,12 @@ const controller = (() => {
     document.addEventListener('keydown', (e) => {
         if(e.code === 'ArrowRight' || e.code === 'ArrowLeft' || e.code === 'ArrowUp' || e.code === 'ArrowDown'){
             game.moveNums(e.code);
-            game.addNewNum();
+            if(game.changeMade.change === true){
+                game.addNewNum();    
+            }
             display.clearCards();
             display.setCards();
+            game.changeMade.change = false;
         }
     })
 
